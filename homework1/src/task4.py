@@ -1,4 +1,8 @@
+"""Task 4: Functions and duck typing."""
+
+
 def calculate_discount(price, discount):
+    """Return a price after applying a discount percentage."""
     try:
         if price < 0:
             raise ValueError("Price cannot be negative")

@@ -1,3 +1,5 @@
+"""Task 5: Lists and dictionaries."""
+
 favorite_books = [
     {"title": "Harry Potter", "author": "J. K. Rowling"},
     {"title": "The Hobbit", "author": "J. R. R. Tolkien"},
