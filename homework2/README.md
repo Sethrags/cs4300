@@ -104,10 +104,10 @@ The application is deployed as the free Render web service **cs4300-homework2**:
 - Live URL: https://cs4300-homework2.onrender.com/
 - Repository branch: `main`
 - Root directory: `homework2`
-- Build command: `pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python manage.py createsuperuser --noinput`
+- Build command: `pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate`
 - Start command: `gunicorn movie_theater_booking.wsgi:application --bind 0.0.0.0:$PORT`
 
-The service uses the free Render PostgreSQL database **cs4300-homework2-db** through the private `DATABASE_URL` environment variable. PostgreSQL preserves users, movies, seats, and bookings when the free web service restarts or spins down. The database was created on October 9, 2026 and Render's free PostgreSQL plan expires after 30 days unless it is upgraded. A migration creates a realistic demo catalogue with a standard seat layout only when this database is empty. Visitors can create their own account from the site to make a booking; administrators can still maintain the catalogue through Django admin.
+The service uses the free Render PostgreSQL database **cs4300-homework2-db** through the private `DATABASE_URL` environment variable. PostgreSQL preserves users, movies, seats, and bookings when the free web service restarts or spins down. The database was created on October 9, 2026 and Render's free PostgreSQL plan expires after 30 days unless it is upgraded. A migration creates a realistic demo catalogue with a standard seat layout only when this database is empty. The administrator account is created once during initial setup, so `createsuperuser` is not included in the recurring Render build command. Visitors can create their own account from the site to make a booking; administrators can still maintain the catalogue through Django admin.
 
 ## AI-use disclosure
 
