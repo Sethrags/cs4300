@@ -1,0 +1,32 @@
+{% extends 'bookings/base.html' %}
+{% block title %}Choose a seat | CineBook{% endblock %}
+{% block content %}
+  <a href="{% url 'movie-list' %}" class="text-decoration-none small">&larr; Back to movies</a>
+  <div class="row justify-content-center mt-2"><div class="col-lg-8">
+    <div class="card border-0 shadow-sm"><div class="card-body p-4 p-md-5">
+      <span class="badge text-bg-primary mb-2">{{ movie.duration }} minutes</span>
+      <h1 class="h2">{{ movie.title }}</h1>
+      <p class="text-secondary">{{ movie.description }}</p>
+      <hr class="my-4">
+      <h2 class="h5 mb-3">Select an available seat</h2>
+      {% if seats %}
+        <form method="post">{% csrf_token %}
+          <div class="seat-grid mb-4">
+            {% for seat in seats %}
+              {% if seat.is_booked %}
+                <span class="btn btn-outline-secondary disabled" aria-disabled="true">{{ seat.seat_number }}</span>
+              {% else %}
+                <input type="radio" class="btn-check" name="seat" id="seat-{{ seat.id }}" value="{{ seat.id }}" required>
+                <label class="btn btn-outline-primary" for="seat-{{ seat.id }}">{{ seat.seat_number }}</label>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <p class="small text-secondary">Gray seats are unavailable.</p>
+          <button class="btn btn-dark">Confirm booking</button>
+        </form>
+      {% else %}
+        <div class="alert alert-info mb-0">Seats have not been added for this movie yet.</div>
+      {% endif %}
+    </div></div>
+  </div></div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'bookings/base.html' %}
+{% block title %}Now showing | CineBook{% endblock %}
+{% block content %}
+  <div class="p-4 p-md-5 mb-5 text-white rounded-4 hero">
+    <p class="text-uppercase fw-semibold small mb-2">Your next night out</p>
+    <h1 class="display-5 fw-bold">Now showing</h1>
+    <p class="lead mb-0">Choose a movie, find an available seat, and book in seconds.</p>
+  </div>
+  <div class="row g-4">
+    {% for movie in movies %}
+      <div class="col-md-6 col-lg-4">
+        <article class="card h-100 border-0 shadow-sm movie-card">
+          <div class="card-body d-flex flex-column p-4">
+            <div class="d-flex justify-content-between gap-3 mb-3"><span class="badge text-bg-primary">{{ movie.duration }} min</span><small class="text-secondary">{{ movie.release_date|date:'M j, Y' }}</small></div>
+            <h2 class="h4">{{ movie.title }}</h2>
+            <p class="text-secondary flex-grow-1">{{ movie.description }}</p>
+            <p class="small mb-3"><strong>{{ movie.seats.count }}</strong> seats listed</p>
+            <a href="{% url 'book-seat' movie.id %}" class="btn btn-dark w-100">Choose a seat</a>
+          </div>
+        </article>
+      </div>
+    {% empty %}
+      <div class="col"><div class="alert alert-info">No movies are listed yet. Add movies and seats through the admin site or REST API.</div></div>
+    {% endfor %}
+  </div>
+{% endblock %}

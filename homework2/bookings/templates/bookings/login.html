@@ -1,0 +1,8 @@
+{% extends 'bookings/base.html' %}
+{% block title %}Log in | CineBook{% endblock %}
+{% block content %}
+  <div class="row justify-content-center"><div class="col-sm-9 col-md-6 col-lg-4"><div class="card border-0 shadow-sm"><div class="card-body p-4">
+    <h1 class="h3 mb-3">Welcome back</h1>
+    <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-dark w-100">Log in</button></form>
+  </div></div></div></div>
+{% endblock %}

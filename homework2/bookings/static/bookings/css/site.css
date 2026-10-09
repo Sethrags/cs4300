@@ -1,0 +1,9 @@
+:root { --cine-indigo: #273469; --cine-blue: #4059ad; }
+body { min-height: 100vh; }
+.hero { background: linear-gradient(135deg, var(--cine-indigo), var(--cine-blue)); }
+.movie-card { transition: transform .18s ease, box-shadow .18s ease; }
+.movie-card:hover { transform: translateY(-4px); box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.12) !important; }
+.seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: .75rem; }
+.seat-grid .btn { min-height: 44px; display: grid; place-items: center; }
+form p label { display: block; font-weight: 600; margin-bottom: .25rem; }
+form p input { width: 100%; padding: .375rem .75rem; border: 1px solid #ced4da; border-radius: .375rem; }
