@@ -9,6 +9,11 @@ Feature: Reserving movie seats
     Then the response status is 200
     And I see "Feature Film"
 
+  Scenario: A visitor creates an account before booking
+    When I create an account named "grader"
+    Then the response redirects to the movie catalogue
+    And the account "grader" exists
+
   Scenario: A signed-in user reserves an available seat
     Given a registered moviegoer named "jordan"
     And a movie named "Feature Film" with an available seat "A1"

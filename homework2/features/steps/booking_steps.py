@@ -30,6 +30,18 @@ def visit_catalogue(context):
     context.response = context.test.client.get(reverse("movie-list"))
 
 
+@when('I create an account named "{username}"')
+def create_account(context, username):
+    context.response = context.test.client.post(
+        reverse("register"),
+        {
+            "username": username,
+            "password1": "ready-for-movies-123",
+            "password2": "ready-for-movies-123",
+        },
+    )
+
+
 @when("the moviegoer signs in")
 def sign_in(context):
     context.test.client.login(username=context.username, password=context.password)
@@ -50,6 +62,17 @@ def response_has_status(context, status_code):
 @then('I see "{text}"')
 def response_contains_text(context, text):
     assert text in context.response.content.decode()
+
+
+@then("the response redirects to the movie catalogue")
+def response_redirects_to_catalogue(context):
+    assert context.response.status_code == 302
+    assert context.response.url == reverse("movie-list")
+
+
+@then('the account "{username}" exists')
+def account_exists(context, username):
+    assert get_user_model().objects.filter(username=username).exists()
 
 
 @then('the reservation is recorded for "{username}"')
