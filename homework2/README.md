@@ -9,6 +9,7 @@ CineBook is a Django and Django REST Framework application for browsing movies, 
 - Movie catalogue with title, description, release date, and runtime
 - Per-movie seats with live availability status
 - Authenticated, atomic reservations that prevent duplicate seat bookings
+- Public account registration so a visitor can reserve seats without administrator credentials
 - Personal booking history and booking cancellation through the API
 - Browsable REST endpoints for movies, seats, and bookings
 - Django admin for adding catalogue data
@@ -26,6 +27,7 @@ homework2/
 │   ├── api.py                        # REST Framework viewsets
 │   ├── models.py                     # Movie, Seat, and Booking models
 │   ├── serializers.py                # JSON serializers
+│   ├── services.py                   # Shared seat-reservation transaction
 │   ├── tests.py                      # Unit and API integration tests
 │   └── views.py                      # Browser-facing views
 ├── features/                         # Behave BDD feature scenarios and steps
@@ -52,7 +54,7 @@ python manage.py createsuperuser
 python manage.py runserver 0.0.0.0:3000
 ```
 
-Open `http://127.0.0.1:3000/` for the site and `http://127.0.0.1:3000/admin/` to add movies and seats. Log in at `/accounts/login/` before reserving seats.
+Open `http://127.0.0.1:3000/` for the site and `http://127.0.0.1:3000/admin/` to add movies and seats. Visitors can create an account at `/accounts/register/` before reserving seats.
 
 ## REST API
 
@@ -62,6 +64,7 @@ Open `http://127.0.0.1:3000/` for the site and `http://127.0.0.1:3000/admin/` to
 | `POST /api/movies/` | Create a movie (authenticated) |
 | `GET /api/seats/?movie=<id>` | List seats for a movie |
 | `GET /api/seats/available/?movie=<id>` | List available seats |
+| `POST /api/seats/<id>/book/` | Reserve a specific available seat (authenticated) |
 | `GET, POST /api/bookings/` | View personal booking history or make a booking |
 | `GET, DELETE /api/bookings/<id>/` | Read or cancel one of your bookings |
 
@@ -92,7 +95,7 @@ coverage run manage.py test
 coverage report
 ```
 
-The test suite currently has 15 Django tests, 2 Behave scenarios, and 90% coverage of the `bookings` application. The coverage configuration enforces the assignment's 80% target.
+The test suite currently has 24 Django tests, 3 Behave scenarios, and 98% coverage of the `bookings` application. The coverage configuration enforces the assignment's 80% target.
 
 ## Deployment on Render
 
@@ -104,7 +107,7 @@ The application is deployed as the free Render web service **cs4300-homework2**:
 - Build command: `pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate`
 - Start command: `gunicorn movie_theater_booking.wsgi:application --bind 0.0.0.0:$PORT`
 
-The current free deployment uses SQLite rather than PostgreSQL. Render's free filesystem is ephemeral, so deployed users and catalogue data can reset after a restart, spin-down, or redeploy. Add movies and seats through the admin site or REST API when demonstrating the application.
+The current free deployment uses SQLite rather than PostgreSQL. Render's free filesystem is ephemeral, so deployed users and catalogue data can reset after a restart, spin-down, or redeploy. A migration removes legacy catalogue records that violate the current validation rules and creates a realistic demo catalogue with a standard seat layout whenever the database starts empty. Visitors can create their own account from the site to make a booking; administrators can still maintain the catalogue through Django admin.
 
 ## AI-use disclosure
 
