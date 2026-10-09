@@ -1,13 +1,23 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
+
+
+SEAT_NUMBER_VALIDATOR = RegexValidator(
+    regex=r"^[A-Z][0-9]{1,2}$",
+    message="Use a seat number such as A1 or C12.",
+)
 
 
 class Movie(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     release_date = models.DateField()
-    duration = models.PositiveIntegerField(help_text="Runtime in minutes")
+    duration = models.PositiveIntegerField(
+        help_text="Runtime in minutes",
+        validators=[MinValueValidator(1), MaxValueValidator(600)],
+    )
 
     class Meta:
         ordering = ["release_date", "title"]
@@ -18,7 +28,7 @@ class Movie(models.Model):
 
 class Seat(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="seats")
-    seat_number = models.CharField(max_length=10)
+    seat_number = models.CharField(max_length=3, validators=[SEAT_NUMBER_VALIDATOR])
     is_booked = models.BooleanField(default=False)
 
     class Meta:
