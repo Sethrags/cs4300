@@ -1,1 +1,1 @@
-web: gunicorn movie_theater_booking.wsgi:application
+web: gunicorn movie_theater_booking.wsgi:application --bind 0.0.0.0:$PORT
